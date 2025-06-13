@@ -1,37 +1,25 @@
 import streamlit as st
-import requests
+import openai
+import datetime
 
-st.set_page_config(page_title="LernCoach", page_icon="🧠", layout="centered")
+# ✅ API-Key aus Streamlit Secrets laden
+openai.api_key = st.secrets["TOGETHER_API_KEY"]
 
-st.markdown("## 🧠 LernCoach – Dein KI-basierter Lernpartner")
-st.markdown("### 📚 Lerntext eingeben")
-st.markdown("Füge hier deinen Lernstoff ein:")
+# ✅ Seitenlayout festlegen
+st.set_page_config(
+    page_title="LernCoach",
+    page_icon="🧠",
+    layout="centered"
+)
 
-user_input = st.text_area("", height=150)
+st.title("🧠 LernCoach – Dein KI-basierter Lernpartner")
 
-if st.button("Lernen starten (GPT)"):
-    with st.spinner("KI denkt nach..."):
-        try:
-            headers = {
-                "Authorization": f"Bearer {st.secrets['TOGETHER_API_KEY']}",
-                "Content-Type": "application/json"
-            }
-            data = {
-                "model": "mistralai/Mistral-7B-Instruct-v0.2",
-                "messages": [
-                    {"role": "system", "content": "Du bist ein Lerncoach und erklärst verständlich."},
-                    {"role": "user", "content": user_input}
-                ],
-                "max_tokens": 512
-            }
-            response = requests.post(
-                "https://api.together.xyz/v1/chat/completions",
-                headers=headers,
-                json=data
-            )
-            assistant_reply = response.json()["choices"][0]["message"]["content"]
-            st.success("Antwort von der KI:")
-            st.write(assistant_reply)
+# ✅ Punktesystem starten
+if "points" not in st.session_state:
+    st.session_state.points = 0
 
-        except Exception as e:
-            st.error(f"Fehler bei der GPT-Anfrage: {e}")
+if "streak" not in st.session_state:
+    st.session_state.streak = 1
+
+if "last_visit" not in st.session_state:
+    st.session_state.last_visit = str(datetime.date.today())
