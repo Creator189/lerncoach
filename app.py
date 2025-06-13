@@ -17,7 +17,7 @@ if st.button("Lernen starten (GPT)"):
                 "Content-Type": "application/json"
             }
             data = {
-                "model": "mistralai/Mistral-7B-Instruct-v0.2",  # Oder: meta-llama/Llama-3-8b-chat-hf
+                "model": "mistralai/Mistral-7B-Instruct-v0.2",
                 "messages": [
                     {"role": "system", "content": "Du bist ein Lerncoach und erklärst verständlich."},
                     {"role": "user", "content": user_input}
