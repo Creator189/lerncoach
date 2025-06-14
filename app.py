@@ -3,7 +3,8 @@ import openai
 import datetime
 
 # ✅ API-Key aus Streamlit Secrets laden
-openai.api_key = st.secrets["TOGETHER_API_KEY"]
+client = OpenAI(api_key=st.secrets["TOGETHER_API_KEY"])
+
 
 # ✅ Seitenlayout festlegen
 st.set_page_config(
